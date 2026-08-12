@@ -3,7 +3,7 @@
 A full-stack portfolio demo: a fictional consumer electronics storefront
 ("NimbusTech") with a public shop and an authenticated admin area for
 managing inventory and orders. Built with Next.js (App Router), Prisma +
-SQLite, and NextAuth — no external services required to run it locally.
+PostgreSQL, and NextAuth.
 
 ## Features
 
@@ -24,13 +24,18 @@ SQLite, and NextAuth — no external services required to run it locally.
 ## Tech stack
 
 - [Next.js 16](https://nextjs.org) (App Router, TypeScript, React 19)
-- [Prisma 7](https://www.prisma.io) + SQLite (file-based database, zero
-  setup)
+- [Prisma 7](https://www.prisma.io) + PostgreSQL (via the `pg` driver
+  adapter)
 - [NextAuth.js v5](https://authjs.dev) (Credentials provider, JWT sessions)
 - [Tailwind CSS v4](https://tailwindcss.com)
 - [Zod](https://zod.dev) for input validation
 
 ## Getting started
+
+Requires a PostgreSQL database (e.g. a free [Neon](https://neon.tech) or
+[Vercel Postgres](https://vercel.com/storage/postgres) instance). Copy
+`.env.example` to `.env` and set `DATABASE_URL` to its connection string,
+then:
 
 ```bash
 npm install
@@ -61,7 +66,7 @@ Copy `.env.example` to `.env` and adjust as needed:
 
 | Variable         | Purpose                                              |
 | ---------------- | ----------------------------------------------------- |
-| `DATABASE_URL`   | SQLite connection string, e.g. `file:./dev.db`        |
+| `DATABASE_URL`   | PostgreSQL connection string                          |
 | `AUTH_SECRET`    | Secret used by NextAuth to sign session tokens         |
 | `ADMIN_EMAIL`    | Email for the demo admin user created by the seed script |
 | `ADMIN_PASSWORD` | Password for the demo admin user created by the seed script |
