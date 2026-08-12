@@ -16,10 +16,6 @@ const categories = [
   { name: "Computing", slug: "computing" },
 ];
 
-function img(slug: string) {
-  return `https://picsum.photos/seed/${slug}/600/600`;
-}
-
 const products = [
   // Audio
   {
@@ -31,6 +27,7 @@ const products = [
     priceCents: 12999,
     sku: "AUD-1001",
     stock: 42,
+    image: "https://images.unsplash.com/photo-1756902368926-eb9e5e9d2a69?w=600&h=600&fit=crop&q=80",
   },
   {
     slug: "over-ear-studio-headphones",
@@ -40,6 +37,7 @@ const products = [
     priceCents: 18999,
     sku: "AUD-1002",
     stock: 17,
+    image: "https://images.unsplash.com/photo-1600086827875-a63b01f1335c?w=600&h=600&fit=crop&q=80",
   },
   {
     slug: "portable-bluetooth-speaker",
@@ -49,6 +47,7 @@ const products = [
     priceCents: 7999,
     sku: "AUD-1003",
     stock: 0,
+    image: "https://images.unsplash.com/photo-1564975472884-a6e9fd24e967?w=600&h=600&fit=crop&q=80",
   },
   {
     slug: "usb-condenser-microphone",
@@ -58,6 +57,7 @@ const products = [
     priceCents: 8999,
     sku: "AUD-1004",
     stock: 25,
+    image: "https://images.unsplash.com/photo-1610733661660-2e2110acb090?w=600&h=600&fit=crop&q=80",
   },
   // Wearables
   {
@@ -68,6 +68,7 @@ const products = [
     priceCents: 5999,
     sku: "WEA-2001",
     stock: 38,
+    image: "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?w=600&h=600&fit=crop&q=80",
   },
   {
     slug: "smartwatch-series-x",
@@ -77,6 +78,7 @@ const products = [
     priceCents: 24999,
     sku: "WEA-2002",
     stock: 3,
+    image: "https://images.unsplash.com/photo-1624096104992-9b4fa3a279dd?w=600&h=600&fit=crop&q=80",
   },
   {
     slug: "sleep-tracking-ring",
@@ -86,6 +88,7 @@ const products = [
     priceCents: 29999,
     sku: "WEA-2003",
     stock: 11,
+    image: "https://images.unsplash.com/photo-1758577515333-e71b713059f1?w=600&h=600&fit=crop&q=80",
   },
   {
     slug: "kids-gps-smartwatch",
@@ -95,6 +98,8 @@ const products = [
     priceCents: 6999,
     sku: "WEA-2004",
     stock: 0,
+    image:
+      "https://images.pexels.com/photos/9794712/pexels-photo-9794712.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
   },
   // Smart Home
   {
@@ -105,6 +110,7 @@ const products = [
     priceCents: 14999,
     sku: "SHM-3001",
     stock: 20,
+    image: "https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=600&h=600&fit=crop&q=80",
   },
   {
     slug: "video-doorbell",
@@ -114,6 +120,7 @@ const products = [
     priceCents: 9999,
     sku: "SHM-3002",
     stock: 4,
+    image: "https://images.unsplash.com/photo-1633194883650-df448a10d554?w=600&h=600&fit=crop&q=80",
   },
   {
     slug: "smart-led-bulb-4-pack",
@@ -123,6 +130,7 @@ const products = [
     priceCents: 4499,
     sku: "SHM-3003",
     stock: 60,
+    image: "https://images.unsplash.com/photo-1674659719067-8735479ba10c?w=600&h=600&fit=crop&q=80",
   },
   {
     slug: "robot-vacuum",
@@ -132,6 +140,7 @@ const products = [
     priceCents: 34999,
     sku: "SHM-3004",
     stock: 8,
+    image: "https://images.unsplash.com/photo-1653990480360-31a12ce9723e?w=600&h=600&fit=crop&q=80",
   },
   {
     slug: "smart-plug-2-pack",
@@ -141,6 +150,8 @@ const products = [
     priceCents: 2499,
     sku: "SHM-3005",
     stock: 55,
+    image:
+      "https://images.pexels.com/photos/4148576/pexels-photo-4148576.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
   },
   // Accessories
   {
@@ -151,6 +162,8 @@ const products = [
     priceCents: 4999,
     sku: "ACC-4001",
     stock: 33,
+    image:
+      "https://images.pexels.com/photos/4195404/pexels-photo-4195404.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
   },
   {
     slug: "wireless-charging-pad",
@@ -160,6 +173,7 @@ const products = [
     priceCents: 2999,
     sku: "ACC-4002",
     stock: 47,
+    image: "https://images.unsplash.com/photo-1575543419095-0b090628213f?w=600&h=600&fit=crop&q=80",
   },
   {
     slug: "laptop-sleeve-13-inch",
@@ -169,6 +183,8 @@ const products = [
     priceCents: 1999,
     sku: "ACC-4003",
     stock: 2,
+    image:
+      "https://images.pexels.com/photos/89723/pexels-photo-89723.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
   },
   {
     slug: "10000mah-power-bank",
@@ -178,6 +194,8 @@ const products = [
     priceCents: 3499,
     sku: "ACC-4004",
     stock: 29,
+    image:
+      "https://images.pexels.com/photos/3921704/pexels-photo-3921704.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
   },
   // Computing
   {
@@ -188,6 +206,8 @@ const products = [
     priceCents: 8999,
     sku: "CMP-5001",
     stock: 19,
+    image:
+      "https://images.pexels.com/photos/3812048/pexels-photo-3812048.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
   },
   {
     slug: "wireless-ergonomic-mouse",
@@ -197,6 +217,8 @@ const products = [
     priceCents: 3999,
     sku: "CMP-5002",
     stock: 24,
+    image:
+      "https://images.pexels.com/photos/36343363/pexels-photo-36343363.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
   },
   {
     slug: "4k-webcam",
@@ -206,6 +228,8 @@ const products = [
     priceCents: 7499,
     sku: "CMP-5003",
     stock: 0,
+    image:
+      "https://images.pexels.com/photos/7172701/pexels-photo-7172701.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
   },
 ];
 
@@ -235,7 +259,7 @@ async function main() {
         description: product.description,
         priceCents: product.priceCents,
         sku: product.sku,
-        imageUrl: img(product.slug),
+        imageUrl: product.image,
         stock: product.stock,
         categoryId,
       },

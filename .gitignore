@@ -37,6 +37,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# ai tooling
+/.claude
+/.windsurf
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
@@ -45,3 +49,5 @@ next-env.d.ts
 /dev.db
 /dev.db-journal
 /src/generated/prisma
+
+
