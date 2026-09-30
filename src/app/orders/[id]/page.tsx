@@ -18,7 +18,7 @@ export default async function OrderConfirmationPage({ params }: { params: Params
 
   const order = await prisma.order.findUnique({
     where: { id },
-    include: { items: { include: { product: true } } },
+    include: { items: true },
   });
 
   if (!order) {
@@ -43,7 +43,7 @@ export default async function OrderConfirmationPage({ params }: { params: Params
         {order.items.map((item) => (
           <li key={item.id} className="flex justify-between py-3 text-sm">
             <span>
-              {item.product.name} &times; {item.quantity}
+              {item.productName} &times; {item.quantity}
             </span>
             <span>{formatCents(item.unitPriceCents * item.quantity)}</span>
           </li>

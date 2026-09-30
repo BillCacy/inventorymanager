@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { PortableText } from "next-sanity";
+import { getProductBySlug } from "@/lib/catalog";
 import { formatCents } from "@/lib/format";
 import { Badge } from "@/components/ui/Badge";
 import { AddToCartButton } from "@/components/storefront/AddToCartButton";
@@ -10,12 +11,9 @@ type Params = Promise<{ slug: string }>;
 export default async function ProductDetailPage({ params }: { params: Params }) {
   const { slug } = await params;
 
-  const product = await prisma.product.findUnique({
-    where: { slug },
-    include: { category: true },
-  });
+  const product = await getProductBySlug(slug);
 
-  if (!product || !product.isActive) {
+  if (!product) {
     notFound();
   }
 
@@ -59,9 +57,9 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
             {lowStock && <Badge tone="yellow">Only {product.stock} left</Badge>}
           </div>
 
-          <p className="mt-6 whitespace-pre-line text-gray-700">
-            {product.description}
-          </p>
+          <div className="mt-6 space-y-4 text-gray-700">
+            <PortableText value={product.description} />
+          </div>
 
           <div className="mt-8">
             <AddToCartButton product={product} />

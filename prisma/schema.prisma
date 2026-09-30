@@ -21,28 +21,15 @@ enum UserRole {
   ADMIN
 }
 
-model Category {
-  id       String    @id @default(cuid())
-  name     String    @unique
-  slug     String    @unique
-  products Product[]
-}
-
+// Inventory record for a product. Catalog content (name, description, price,
+// images, category) lives in Sanity and is joined to this row on `sku`.
 model Product {
-  id          String      @id @default(cuid())
-  name        String
-  slug        String      @unique
-  description String
-  priceCents  Int
-  sku         String      @unique
-  imageUrl    String
-  stock       Int         @default(0)
-  isActive    Boolean     @default(true)
-  categoryId  String
-  category    Category    @relation(fields: [categoryId], references: [id])
-  orderItems  OrderItem[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id         String      @id @default(cuid())
+  sku        String      @unique
+  stock      Int         @default(0)
+  orderItems OrderItem[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 model Order {
@@ -61,6 +48,8 @@ model OrderItem {
   orderId       String
   order         Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId     String
+  // Snapshot of the product name at purchase time (catalog content lives in Sanity)
+  productName   String
   product       Product @relation(fields: [productId], references: [id])
   quantity      Int
   unitPriceCents Int
