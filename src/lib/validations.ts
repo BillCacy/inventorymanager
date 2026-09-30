@@ -5,22 +5,11 @@ export const loginSchema = z.object({
   password: z.string().min(1),
 });
 
-export const productSchema = z.object({
-  name: z.string().min(1, "Name is required").max(120),
-  slug: z
-    .string()
-    .min(1, "Slug is required")
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase, alphanumeric, hyphen-separated"),
-  description: z.string().min(1, "Description is required"),
-  priceCents: z.coerce.number().int().min(0, "Price must be zero or greater"),
-  sku: z.string().min(1, "SKU is required"),
-  imageUrl: z.string().url("Must be a valid URL"),
+export const stockSchema = z.object({
   stock: z.coerce.number().int().min(0, "Stock must be zero or greater"),
-  isActive: z.coerce.boolean().default(true),
-  categoryId: z.string().min(1, "Category is required"),
 });
 
-export type ProductInput = z.infer<typeof productSchema>;
+export type StockInput = z.infer<typeof stockSchema>;
 
 export const orderItemSchema = z.object({
   productId: z.string().min(1),

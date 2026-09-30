@@ -1,23 +1,25 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { getAllProducts } from "@/lib/catalog";
 import { formatCents } from "@/lib/format";
+import { studioCreateProductUrl, studioEditUrl } from "@/lib/studio";
 import { Button } from "@/components/ui/Button";
 import { StockBadge } from "@/components/admin/StockBadge";
-import { DeleteProductButton } from "@/components/admin/DeleteProductButton";
 
 export default async function AdminProductsPage() {
-  const products = await prisma.product.findMany({
-    include: { category: true },
-    orderBy: { createdAt: "desc" },
-  });
+  const products = await getAllProducts();
 
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">Products</h2>
-        <Link href="/admin/products/new">
-          <Button>New product</Button>
-        </Link>
+        <div>
+          <h2 className="text-lg font-semibold text-gray-900">Products</h2>
+          <p className="text-sm text-gray-500">
+            Product content is managed in Sanity Studio. Stock levels are managed here.
+          </p>
+        </div>
+        <a href={studioCreateProductUrl()} target="_blank" rel="noopener noreferrer">
+          <Button>New product in Studio</Button>
+        </a>
       </div>
 
       <div className="mt-4 overflow-x-auto rounded-lg border border-gray-200 bg-white">
@@ -34,8 +36,11 @@ export default async function AdminProductsPage() {
           </thead>
           <tbody className="divide-y divide-gray-100">
             {products.map((product) => (
-              <tr key={product.id}>
-                <td className="px-4 py-2 font-medium text-gray-900">{product.name}</td>
+              <tr key={product.sanityId}>
+                <td className="px-4 py-2">
+                  <div className="font-medium text-gray-900">{product.name}</div>
+                  <div className="text-xs text-gray-500">{product.sku}</div>
+                </td>
                 <td className="px-4 py-2 text-gray-500">{product.category.name}</td>
                 <td className="px-4 py-2">{formatCents(product.priceCents)}</td>
                 <td className="px-4 py-2">
@@ -44,14 +49,21 @@ export default async function AdminProductsPage() {
                 <td className="px-4 py-2 text-gray-500">
                   {product.isActive ? "Active" : "Hidden"}
                 </td>
-                <td className="space-x-3 px-4 py-2 text-right">
+                <td className="space-x-3 whitespace-nowrap px-4 py-2 text-right">
                   <Link
-                    href={`/admin/products/${product.id}/edit`}
+                    href={`/admin/products/${encodeURIComponent(product.sku)}/stock`}
                     className="text-indigo-600 hover:underline"
                   >
-                    Edit
+                    Update stock
                   </Link>
-                  <DeleteProductButton productId={product.id} productName={product.name} />
+                  <a
+                    href={studioEditUrl(product.sanityId)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-indigo-600 hover:underline"
+                  >
+                    Edit in Studio
+                  </a>
                 </td>
               </tr>
             ))}

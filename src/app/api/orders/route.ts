@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { createOrderSchema } from "@/lib/validations";
+import { getProductsBySku } from "@/lib/catalog";
 
 export async function GET() {
   const session = await auth();
@@ -31,10 +32,19 @@ export async function POST(request: Request) {
   const { customerName, customerEmail, items } = parsed.data;
 
   try {
+    // Prices, names and visibility come from Sanity; fetch them before the
+    // transaction so the database transaction stays short.
+    const inventory = await prisma.product.findMany({
+      where: { id: { in: items.map((item) => item.productId) } },
+      select: { id: true, sku: true },
+    });
+    const catalog = await getProductsBySku(inventory.map((row) => row.sku));
+
     const order = await prisma.$transaction(async (tx) => {
       let totalCents = 0;
       const orderItemsData: {
         productId: string;
+        productName: string;
         quantity: number;
         unitPriceCents: number;
       }[] = [];
@@ -44,18 +54,21 @@ export async function POST(request: Request) {
           where: { id: item.productId },
         });
 
-        if (!product || !product.isActive) {
+        const content = product ? catalog.get(product.sku) : undefined;
+
+        if (!product || !content || !content.isActive) {
           throw new Error("One of the items in your cart is no longer available.");
         }
         if (product.stock < item.quantity) {
-          throw new Error(`Not enough stock for ${product.name}.`);
+          throw new Error(`Not enough stock for ${content.name}.`);
         }
 
-        totalCents += product.priceCents * item.quantity;
+        totalCents += content.priceCents * item.quantity;
         orderItemsData.push({
           productId: product.id,
+          productName: content.name,
           quantity: item.quantity,
-          unitPriceCents: product.priceCents,
+          unitPriceCents: content.priceCents,
         });
 
         await tx.product.update({

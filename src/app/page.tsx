@@ -1,14 +1,9 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { getNewestProducts } from "@/lib/catalog";
 import { ProductGrid } from "@/components/storefront/ProductGrid";
 
 export default async function HomePage() {
-  const featured = await prisma.product.findMany({
-    where: { isActive: true },
-    include: { category: true },
-    orderBy: { createdAt: "desc" },
-    take: 8,
-  });
+  const featured = await getNewestProducts();
 
   return (
     <div>

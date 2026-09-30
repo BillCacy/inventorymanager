@@ -1,26 +1,27 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { getAllProducts } from "@/lib/catalog";
 import { formatCents } from "@/lib/format";
 import { StatCard } from "@/components/admin/StatCard";
 import { StockBadge } from "@/components/admin/StockBadge";
 
 export default async function AdminDashboardPage() {
-  const [productCount, orderCount, pendingOrders, lowStockProducts, revenue] =
+  const [products, orderCount, pendingOrders, revenue] =
     await Promise.all([
-      prisma.product.count(),
+      getAllProducts(),
       prisma.order.count(),
       prisma.order.count({ where: { status: "PENDING" } }),
-      prisma.product.findMany({
-        where: { stock: { lt: 5 } },
-        include: { category: true },
-        orderBy: { stock: "asc" },
-        take: 10,
-      }),
       prisma.order.aggregate({
         _sum: { totalCents: true },
         where: { status: { in: ["PAID", "SHIPPED"] } },
       }),
     ]);
+
+  const productCount = products.length;
+  const lowStockProducts = products
+    .filter((product) => product.stock < 5)
+    .sort((a, b) => a.stock - b.stock)
+    .slice(0, 10);
 
   return (
     <div>
@@ -57,7 +58,7 @@ export default async function AdminDashboardPage() {
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {lowStockProducts.map((product) => (
-                  <tr key={product.id}>
+                  <tr key={product.sanityId}>
                     <td className="px-4 py-2 font-medium text-gray-900">{product.name}</td>
                     <td className="px-4 py-2 text-gray-500">{product.category.name}</td>
                     <td className="px-4 py-2">
@@ -65,7 +66,7 @@ export default async function AdminDashboardPage() {
                     </td>
                     <td className="px-4 py-2 text-right">
                       <Link
-                        href={`/admin/products/${product.id}/edit`}
+                        href={`/admin/products/${encodeURIComponent(product.sku)}/stock`}
                         className="text-indigo-600 hover:underline"
                       >
                         Restock

@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { getCategories, getStorefrontProducts } from "@/lib/catalog";
 import { ProductGrid } from "@/components/storefront/ProductGrid";
 import { CategoryFilter } from "@/components/storefront/CategoryFilter";
 import { SearchBar } from "@/components/storefront/SearchBar";
@@ -17,23 +17,8 @@ export default async function ProductsPage({
   const { category, q } = await searchParams;
 
   const [categories, products] = await Promise.all([
-    prisma.category.findMany({ orderBy: { name: "asc" } }),
-    prisma.product.findMany({
-      where: {
-        isActive: true,
-        ...(category ? { category: { slug: category } } : {}),
-        ...(q
-          ? {
-              OR: [
-                { name: { contains: q } },
-                { description: { contains: q } },
-              ],
-            }
-          : {}),
-      },
-      include: { category: true },
-      orderBy: { name: "asc" },
-    }),
+    getCategories(),
+    getStorefrontProducts({ category, q }),
   ]);
 
   return (

@@ -5,7 +5,7 @@ import { useCart } from "@/components/storefront/CartProvider";
 import { Button } from "@/components/ui/Button";
 
 type Product = {
-  id: string;
+  id: string | null;
   slug: string;
   name: string;
   priceCents: number;
@@ -18,7 +18,9 @@ export function AddToCartButton({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
-  if (product.stock <= 0) {
+  const productId = product.id;
+
+  if (!productId || product.stock <= 0) {
     return (
       <Button disabled className="w-full">
         Out of stock
@@ -45,7 +47,7 @@ export function AddToCartButton({ product }: { product: Product }) {
         onClick={() => {
           addItem(
             {
-              productId: product.id,
+              productId,
               name: product.name,
               slug: product.slug,
               priceCents: product.priceCents,
