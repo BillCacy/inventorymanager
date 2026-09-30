@@ -89,7 +89,7 @@ Copy `.env.example` to `.env` and adjust as needed:
 | `ADMIN_PASSWORD` | Password for the demo admin user created by the seed script |
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID (`o5hhr4br`) |
 | `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset (`production`) |
-| `NEXT_PUBLIC_SANITY_STUDIO_URL` | Studio URL used by the admin "Edit in Studio" links |
+| `NEXT_PUBLIC_SANITY_STUDIO_URL` | Studio URL used by the admin "Edit in Studio" links (https://bc-nimbustech.sanity.studio) |
 
 Generate a secret with:
 
